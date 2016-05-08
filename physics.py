@@ -40,18 +40,18 @@
             self.z - vect.z,
         )
         
-    def __mul__(self, vect):
+    def __mul__(self, val):
         return Vector(
-            self.x * vect.x,
-            self.y * vect.y,
-            self.z * vect.z,
+            self.x * val,
+            self.y * val,
+            self.z * val,
         )
         
-    def __div__(self, vect):
+    def __div__(self, val):
         return Vector(
-            self.x / vect.x,
-            self.y / vect.y,
-            self.z / vect.z,
+            self.x / val,
+            self.y / val,
+            self.z / val,
         )
     
     def mag(self):
@@ -96,12 +96,12 @@ class Body():
             self.v = Vector()
             self.a = Vector()
     
-    def move(self, vect=None, dt=0.1):
-        if vect is None:
-            vect = Vector()
-        da = vect.div(self.m).sub(self.a)
-        dv = self.a.add(da.div(2)).mult(dt)
-        ds = self.v.add(dv.div(2), da.mult(-dt/3)).mult(dt)
-        self.a = self.a.add(da)
-        self.v = self.v.add(dv)
-        self.s = self.s.add(ds)
+    def move(self, force=None, dt=0.1):
+        if force is None:
+            force = Vector()
+        da = force / self.m - self.a
+        dv = self.a + da / 2 * dt
+        ds = self.v + (dv / 2, da * -dt/3) * dt
+        self.a += da
+        self.v += dv
+        self.s += ds
