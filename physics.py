@@ -37,21 +37,42 @@
         return Vector(
             self.x - vect.x,
             self.y - vect.y,
-            self.z - vect.z,
+            self.z - vect.z
         )
         
     def __mul__(self, val):
         return Vector(
             self.x * val,
             self.y * val,
-            self.z * val,
+            self.z * val
+        )
+		
+	def __rmul__(self, val):
+		return Vector(
+            self.x * val,
+            self.y * val,
+            self.z * val
         )
         
     def __div__(self, val):
         return Vector(
             self.x / val,
             self.y / val,
-            self.z / val,
+            self.z / val
+        )
+		
+	def __neg__(self):
+		return Vector(
+            -vect.x,
+            -vect.y,
+            -vect.z
+        )
+		
+	def __pos__(self):
+		return Vector(
+            vect.x,
+            vect.y,
+            vect.z
         )
     
     def mag(self):
@@ -63,8 +84,8 @@
     def setMag(self, mag):
         return self.norm() * mag
         
-    def dot(self, vec):
-        return self.x * vec.x + self.y * vec.y + self.z * vec.z
+    def dot(self, vect):
+        return self.x * vect.x + self.y * vect.y + self.z * vect.z
     
     def cross(self, *args):
         ans = Vector(self)
@@ -75,7 +96,7 @@
             ans.x = x
             ans.y = y
             ans.z = z
-        return
+        return ans
 
 
 class Body():
