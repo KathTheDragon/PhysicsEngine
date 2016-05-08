@@ -100,7 +100,7 @@ class Body():
 			self.v = Vector()
 			self.a = Vector()
 	
-	def move(self, F=Vector(), dt=0.1):
+	def move(self, F=Vector(), dt=0.01):
 		da = F.div(m).sub(self.a)
 		dv = self.a.add(da.div(2)).mult(dt)
 		ds = self.v.add(dv.div(2),da.mult(-dt/3)).mult(dt)
