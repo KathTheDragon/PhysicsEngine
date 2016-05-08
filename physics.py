@@ -4,6 +4,10 @@
             self.x = args[0]
             self.y = args[1]
             self.z = args[2]
+        elif len(args) == 2:
+            self.x = args[0]
+            self.y = args[1]
+            self.z = 0
         elif len(args) == 1:
             self.x = args[0].x
             self.y = args[0].y
@@ -46,9 +50,9 @@
             self.y * val,
             self.z * val
         )
-		
-	def __rmul__(self, val):
-		return Vector(
+        
+    def __rmul__(self, val):
+        return Vector(
             self.x * val,
             self.y * val,
             self.z * val
@@ -60,16 +64,16 @@
             self.y / val,
             self.z / val
         )
-		
-	def __neg__(self):
-		return Vector(
+        
+    def __neg__(self):
+        return Vector(
             -vect.x,
             -vect.y,
             -vect.z
         )
-		
-	def __pos__(self):
-		return Vector(
+        
+    def __pos__(self):
+        return Vector(
             vect.x,
             vect.y,
             vect.z
