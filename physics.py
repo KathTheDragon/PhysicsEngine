@@ -100,8 +100,8 @@ class Body():
         if force is None:
             force = Vector()
         da = force / self.m - self.a
-        dv = self.a + da / 2 * dt
-        ds = self.v + (dv / 2, da * -dt/3) * dt
+        dv = self.a * dt + da * dt/2
+        ds = self.v * dt + dv * dt/2 - da * (dt**2)/3
         self.a += da
         self.v += dv
         self.s += ds
