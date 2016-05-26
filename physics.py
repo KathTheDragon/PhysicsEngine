@@ -1,21 +1,20 @@
 ﻿class Vector():
     def __init__(self, *args):
-        if len(args) == 3:
-            self.x = args[0]
-            self.y = args[1]
-            self.z = args[2]
-        elif len(args) == 2:
-            self.x = args[0]
-            self.y = args[1]
+        if len(args) == 0:
+            self.x = 0
+            self.y = 0
             self.z = 0
         elif len(args) == 1:
             self.x = args[0].x
             self.y = args[0].y
             self.z = args[0].z
         else:
-            self.x = 0
-            self.y = 0
-            self.z = 0
+            self.x = args[0]
+            self.y = args[1]
+            if len(args) == 2:
+                self.z = 0
+            else:
+                self.z = args[2]
         return
     
     def __repr__(self):
@@ -120,13 +119,20 @@ class Body():
             self.s = Vector()
             self.v = Vector()
             self.a = Vector()
+        return
     
-    def move(self, force=None, dt=0.1):
+    def move(self, force=None):
         if force is None:
             force = Vector()
         da = force / self.m - self.a
-        dv = self.a * dt + da * dt/2
-        ds = self.v * dt + dv * dt/2 - da * (dt**2)/3
+        dv = self.a + da / 2
+        ds = self.v + dv / 2 - da / 3
         self.a += da
         self.v += dv
         self.s += ds
+        return
+
+class Region():
+    def __init__(self, *args):
+        pass
+
