@@ -1,5 +1,5 @@
 ﻿from math import cos, acos, sin, asin, atan2
-from misc import lazy_property
+from misc import lazy_property, binom
 
 class Vector():
     def __init__(self, *args):
@@ -82,6 +82,12 @@ class Vector():
     
     def __matmul__(self, vect):
         return self.x * vect.x + self.y * vect.y + self.z * vect.z
+    
+    def __pow__(self, val):
+        if not val % 2:
+            return (self@self)**(val/2)
+        else:
+            return self*(self@self)**((val-1)/2)
     
     def __neg__(self):
         return PVector(
@@ -242,11 +248,33 @@ class Quaternion():
     def __hash__(self):
         return hash((self.s, self.v.x, self.v.y, self.v.z))
     
-    def __add__(self, quat):
-        return (self.s + quat.s) + (self.v + quat.v)
+    def __add__(self, arg):
+        if isinstance(arg,Quaternion):
+            return (self.s + arg.s) + (self.v + arg.v)
+        elif isinstance(arg,Vector):
+            return self.s + (self.v + arg)
+        else:
+            return (self.s + arg) + self.v
     
-    def __sub__(self, quat):
-        return (self.s - quat.s) + (self.v - quat.v)
+    def __radd__(self, arg):
+        if isinstance(arg,Vector):
+            return self.s + (self.v + arg)
+        else:
+            return (self.s + arg) + self.v
+    
+    def __sub__(self, arg):
+        if isinstance(arg,Quaternion):
+            return (self.s - arg.s) + (self.v - arg.v)
+        elif isinstance(arg,Vector):
+            return self.s + (self.v - arg)
+        else:
+            return (self.s - arg) + self.v
+    
+    def __rsub__(self, arg):
+        if isinstance(arg,Vector):
+            return -self.s + (arg - self.v)
+        else:
+            return (arg - self.s) - self.v
         
     def __mul__(self, arg):
         if isinstance(arg, Quaternion):
@@ -264,6 +292,15 @@ class Quaternion():
             return (-arg@self.v) + (self.s*arg + arg*self.v)
         else:
             return (arg * self.s) + (arg * self.v)
+    
+    def __div__(self, val):
+        return (self.s / val) + (self.v / val)
+    
+    def __pow__(self, val):
+        ans = 0
+        for r in range(val+1):
+            ans += (-1)**((r//2)%2)*binom(val,r)*q.s**(val-r)*q.v**r
+        return ans
     
     def __neg__(self):
         return (-self.s) - self.v
